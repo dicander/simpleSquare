@@ -119,6 +119,14 @@ def main():
                     particle.speed_x += 1
         for dead_particle in dead_particles:
             particles.remove(dead_particle)
+        if not aliens:
+            """Print all aliens eliminated"""
+            font = pygame.font.Font('freesansbold.ttf', 32)
+            text = font.render('Win condition fulfilled. Enjoy free movement!', True, (255, 255, 255), (0, 0, 0))
+            textRect = text.get_rect()
+            textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+            screen.blit(text, textRect)
+
 
         # event handling, gets all event from the event queue
         for event in pygame.event.get():
