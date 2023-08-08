@@ -34,6 +34,7 @@ class Particle:
 # define a main function
 def main():
     # initialize the pygame module
+    framecounter = 0
     pygame.init()
     # load and set the logo
     pygame.display.set_caption("Space Invaders")
@@ -66,7 +67,7 @@ def main():
     while running:
         """Add alien counter to the screen"""
         # fill the screen with black
-        screen.fill((0, 0, 0))
+        screen.fill((3, 3, 3))
         pygame.draw.rect(screen, (255, 255, 255), (hero_x, hero_y, 50, 50))
         dead_bullets = []
         for bullet in bullets:
@@ -81,10 +82,11 @@ def main():
             for bullet in bullets:
                 if bullet.x > alien.x and bullet.x < alien.x + ALIEN_SIZE and \
                         bullet.y > alien.y and bullet.y < alien.y + ALIEN_SIZE:
-                    for i in range(500):
+                    for i in range(666):
                         particles.append(Particle(alien.x + ALIEN_SIZE // 2+random.randint(0, 20),
                                                   alien.y + ALIEN_SIZE // 2+random.randint(0, 20),
-                                                  random.randint(-10, 10), random.randint(-10, 10)))
+                                                  random.randint(-20, 20),
+                                                  random.randint(-10, 10)))
                     dead_aliens.append(alien)
                     bullets.remove(bullet)
                     break
@@ -103,12 +105,18 @@ def main():
             aliens.remove(dead_alien)
         dead_particles = []
         for particle in particles:
-            pygame.draw.rect(screen, (255, 0, 0), (particle.x, particle.y, 1, 1))
+            pygame.draw.rect(screen, (255, 0, 0), (particle.x, particle.y, 2, 2))
             particle.x += particle.speed_x
             particle.y += particle.speed_y
-            particle.speed_y += 1
+
             if particle.x < 0 or particle.x > SCREEN_WIDTH or particle.y > SCREEN_HEIGHT:
                 dead_particles.append(particle)
+            if framecounter % 3 == 0:
+                particle.speed_y += 1
+                if particle.speed_x > 0:
+                    particle.speed_x -= 1
+                if particle.speed_x < 0:
+                    particle.speed_x += 1
         for dead_particle in dead_particles:
             particles.remove(dead_particle)
 
@@ -153,6 +161,7 @@ def main():
         clock.tick(60)
         if cooldown > 0:
             cooldown -= 1
+        framecounter += 1
         pygame.display.flip()
 
 
